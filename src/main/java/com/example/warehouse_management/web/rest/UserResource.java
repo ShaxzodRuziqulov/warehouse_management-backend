@@ -49,7 +49,8 @@ private final UserService userService;
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        User result = userService.deleteuser(id);
+        User result = userService.deleteUser(id);
         return ResponseEntity.ok(result);
     }
+
 }

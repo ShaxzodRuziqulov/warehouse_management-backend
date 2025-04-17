@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Getter
 @Data
-@Entity(name = "Users")
+@Entity(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 
     @Override
