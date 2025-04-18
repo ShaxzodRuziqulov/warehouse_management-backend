@@ -13,10 +13,8 @@ public class Income {
     private Products products;
     @ManyToOne
     private WareHouse wareHouse;
-    private String quantity;
+    private double quantity;
     @ManyToOne
     private Measure measure;
     private Double price;
-
-
 }

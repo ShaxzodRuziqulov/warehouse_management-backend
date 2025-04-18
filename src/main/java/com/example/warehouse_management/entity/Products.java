@@ -1,9 +1,7 @@
 package com.example.warehouse_management.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.warehouse_management.entity.enumirated.Status;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -15,4 +13,7 @@ public class Products {
     private Long id;
     private String name;
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

@@ -49,10 +49,4 @@ public class AuthenticationResource {
 
         return ResponseEntity.ok(currentUser);
     }
-    @GetMapping("/")
-    public ResponseEntity<List<User>> allUsers() {
-        List <User> users = userService.allUser();
-
-        return ResponseEntity.ok(users);
-    }
 }

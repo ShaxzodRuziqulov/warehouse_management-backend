@@ -60,15 +60,7 @@ public class UserService {
 
         user.setStatus(Status.DELETED);
 
-        userRepository.save(user);
-        return user;
-    }
-    public List<User> allUser() {
-        List<User> users = new ArrayList<>();
-
-        userRepository.findAll().forEach(users::add);
-
-        return users;
+        return userRepository.save(user);
     }
 
 }

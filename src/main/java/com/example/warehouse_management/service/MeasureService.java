@@ -1,6 +1,7 @@
 package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Measure;
+import com.example.warehouse_management.entity.enumirated.Status;
 import com.example.warehouse_management.repository.MeasureRepository;
 import com.example.warehouse_management.service.dto.MeasureDto;
 import com.example.warehouse_management.service.mapper.MeasureMapper;
@@ -46,5 +47,8 @@ public class MeasureService {
                 .orElseGet(Measure::new);
     }
 
-
+    public void deleteById(Long id) {
+        Measure measure = measureRepository.getReferenceById(id);
+        measureRepository.delete(measure);
+    }
 }

@@ -1,26 +1,22 @@
 package com.example.warehouse_management.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class WareHouse {
+public class WareHouse extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     private Products products;
-    private String quantity;
+    private Double quantity;
 
     @ManyToOne
     private Measure measure;
-    private LocalDateTime updateAt;
-
 }

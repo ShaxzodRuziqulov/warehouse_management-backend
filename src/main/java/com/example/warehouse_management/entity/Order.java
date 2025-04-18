@@ -2,12 +2,14 @@ package com.example.warehouse_management.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +18,8 @@ public class Order {
     private Products products;
     @ManyToOne
     private WareHouse wareHouse;
-    private String quantity;
+    private Double quantity;
     @ManyToOne
     private Measure measure;
 
-    private LocalDateTime createdAt;
 }

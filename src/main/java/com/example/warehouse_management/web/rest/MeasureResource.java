@@ -44,4 +44,10 @@ public class MeasureResource {
         return ResponseEntity.ok().body(result);
     }
 
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<?> delete(@PathVariable Long id) {
+        measureService.deleteById(id);
+        return ResponseEntity.ok().body("Deleted");
+    }
+
 }
