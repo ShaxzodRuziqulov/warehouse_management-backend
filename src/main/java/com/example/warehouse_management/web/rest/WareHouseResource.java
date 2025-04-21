@@ -1,6 +1,5 @@
 package com.example.warehouse_management.web.rest;
 
-import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.service.WareHouseService;
 import com.example.warehouse_management.service.dto.WareHouseDto;
 import org.springframework.http.ResponseEntity;

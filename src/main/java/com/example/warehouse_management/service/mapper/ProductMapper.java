@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper extends EntityMapper<ProductDto, Products> {
-
     ProductDto toDto(Products products);
 
     Products toEntity(ProductDto productDto);

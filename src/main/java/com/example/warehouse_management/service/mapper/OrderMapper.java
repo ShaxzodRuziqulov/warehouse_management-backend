@@ -11,6 +11,7 @@ public interface OrderMapper extends EntityMapper<OrderDto, Order> {
     @Mapping(source = "products.id", target = "productsId")
     @Mapping(source = "wareHouse.id", target = "wareHouseId")
     @Mapping(source = "measure.id", target = "measureId")
+    @Mapping(source = "wareHouse.quantity", target = "wareHouseQuantity", defaultValue = "0.0")
     OrderDto toDto(Order order);
 
     @Mapping(source = "productsId", target = "products.id")

@@ -1,11 +1,9 @@
 package com.example.warehouse_management.service;
 
-import com.example.warehouse_management.entity.Income;
 import com.example.warehouse_management.entity.Measure;
 import com.example.warehouse_management.entity.Products;
 import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.entity.enumirated.Status;
-import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.MeasureRepository;
 import com.example.warehouse_management.repository.ProductsRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
@@ -22,14 +20,14 @@ public class ProductService {
     private final ProductsRepository productsRepository;
     private final MeasureRepository measureRepository;
     private final WareHouseRepository wareHouseRepository;
-    private final IncomeRepository incomeRepository;
 
-    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository, IncomeRepository incomeRepository) {
+
+    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository ) {
         this.productMapper = productMapper;
         this.productsRepository = productsRepository;
         this.measureRepository = measureRepository;
         this.wareHouseRepository = wareHouseRepository;
-        this.incomeRepository = incomeRepository;
+
     }
 
     public ProductDto create(ProductDto productDto) {
@@ -38,7 +36,14 @@ public class ProductService {
         result.setStatus(Status.ACTIVE);
 
         result = productsRepository.save(result);
+        Measure measure = measureRepository.findById(productDto.getMeasureId())
+                .orElseThrow(() -> new RuntimeException("Measure not found"));
 
+        WareHouse wareHouse = new WareHouse();
+        wareHouse.setProducts(result);
+        wareHouse.setQuantity(0.0);
+        wareHouse.setMeasure(measure);
+        wareHouseRepository.save(wareHouse);
 
         return productMapper.toDto(result);
     }

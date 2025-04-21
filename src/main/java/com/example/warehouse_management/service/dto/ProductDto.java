@@ -9,4 +9,5 @@ public class ProductDto {
     private String name;
     private String description;
     private Status status;
+    private Long measureId;
 }

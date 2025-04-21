@@ -2,6 +2,8 @@ package com.example.warehouse_management.service.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class IncomeDto {
     private Long id;
@@ -13,4 +15,9 @@ public class IncomeDto {
 
     private Long measureId;
     private Double price;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    private Double wareHouseQuantity;
 }

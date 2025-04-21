@@ -15,6 +15,7 @@ public class WareHouse extends BaseEntity {
 
     @ManyToOne
     private Products products;
+
     private Double quantity;
 
     @ManyToOne

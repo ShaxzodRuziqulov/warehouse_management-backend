@@ -14,4 +14,8 @@ public class OrderDto {
     private Long measureId;
 
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    private Double wareHouseQuantity;
+
 }
