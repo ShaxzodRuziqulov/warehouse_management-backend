@@ -3,7 +3,6 @@ package com.example.warehouse_management.web.rest;
 import com.example.warehouse_management.entity.User;
 import com.example.warehouse_management.service.AuthenticationService;
 import com.example.warehouse_management.service.JwtService;
-import com.example.warehouse_management.service.UserService;
 import com.example.warehouse_management.service.dto.LoginUserDto;
 import com.example.warehouse_management.service.dto.UserDto;
 import com.example.warehouse_management.service.responce.LoginResponse;
@@ -12,19 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationResource {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
-    private final UserService userService;
 
-    public AuthenticationResource(JwtService jwtService, AuthenticationService authenticationService, UserService userService) {
+    public AuthenticationResource(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
-        this.userService = userService;
     }
 
     @PostMapping("/signup")
