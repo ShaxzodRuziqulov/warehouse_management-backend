@@ -44,4 +44,16 @@ public class IncomeResource {
         IncomeDto result = incomeService.findById(id);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> count() {
+        Long count = incomeService.count();
+        return ResponseEntity.ok().body(count);
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestIncomes(@RequestParam(defaultValue = "10") int limit) {
+        List<IncomeDto> result = incomeService.getLatestIncomes(limit);
+        return ResponseEntity.ok().body(result);
+    }
 }

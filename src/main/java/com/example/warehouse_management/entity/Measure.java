@@ -11,7 +11,4 @@ public class Measure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String piece;
-    private String liter;
-    private Double kilogram;
 }

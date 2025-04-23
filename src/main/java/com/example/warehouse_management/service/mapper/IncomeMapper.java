@@ -10,7 +10,6 @@ public interface IncomeMapper extends EntityMapper<IncomeDto, Income> {
     @Mapping(source = "products.id", target = "productsId")
     @Mapping(source = "wareHouse.id", target = "wareHouseId")
     @Mapping(source = "measure.id", target = "measureId")
-    @Mapping(source = "wareHouse.quantity", target = "wareHouseQuantity", defaultValue = "0.0")
     IncomeDto toDto(Income income);
 
     @Mapping(source = "measureId", target = "measure.id")

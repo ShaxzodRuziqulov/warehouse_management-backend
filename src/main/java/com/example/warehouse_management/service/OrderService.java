@@ -78,4 +78,7 @@ public class OrderService {
     public OrderDto findById(Long id) {
         return orderRepository.findById(id).map(orderMapper::toDto).orElse(null);
     }
+    public long count() {
+        return orderRepository.count();
+    }
 }

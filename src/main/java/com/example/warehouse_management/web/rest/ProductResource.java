@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/product")
@@ -51,4 +52,16 @@ public class ProductResource {
         Products result = productService.deleteById(id);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> count() {
+        long products = productService.count();
+        return ResponseEntity.ok().body(products);
+    }
+    @GetMapping("/chart")
+    public ResponseEntity<?> getProductChartData(){
+        Map<String, Long> result = productService.getProductChartData();
+        return ResponseEntity.ok(result);
+    }
+
 }

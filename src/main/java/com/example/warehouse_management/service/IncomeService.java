@@ -6,6 +6,7 @@ import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,5 +81,22 @@ public class IncomeService {
                 .toDto(incomeRepository.findById(id)
                         .orElse(null));
     }
+    public long count(){
+        return incomeRepository.count();
+    }
 
+    public List<IncomeDto> getLatestIncomes(int limit) {
+        return incomeRepository.findTopNByOrderByCreatedAt(limit).stream()
+                .map(income -> new IncomeDto(
+                        income.getId(),
+                        income.getProducts().getId(),
+                        income.getWareHouse().getId(),
+                        income.getQuantity(),
+                        income.getMeasure().getId(),
+                        income.getPrice(),
+                        income.getCreatedAt()
+                ))
+
+                .collect(Collectors.toList());
+    }
 }

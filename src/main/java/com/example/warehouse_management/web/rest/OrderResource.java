@@ -1,11 +1,7 @@
 package com.example.warehouse_management.web.rest;
 
-import com.example.warehouse_management.entity.Order;
-import com.example.warehouse_management.repository.OrderRepository;
 import com.example.warehouse_management.service.OrderService;
 import com.example.warehouse_management.service.dto.OrderDto;
-import com.example.warehouse_management.service.dto.UserDto;
-import com.example.warehouse_management.service.mapper.OrderMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +42,12 @@ public class OrderResource {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         OrderDto result = orderService.findById(id);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<?> count() {
+        long result = orderService.count();
         return ResponseEntity.ok().body(result);
     }
 }

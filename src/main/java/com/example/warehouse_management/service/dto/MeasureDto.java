@@ -6,7 +6,4 @@ import lombok.Data;
 public class MeasureDto {
     private Long id;
     private String name;
-    private String piece;
-    private String liter;
-    private Double kilogram;
 }

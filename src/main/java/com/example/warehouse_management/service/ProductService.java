@@ -12,6 +12,7 @@ import com.example.warehouse_management.service.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +23,7 @@ public class ProductService {
     private final WareHouseRepository wareHouseRepository;
 
 
-    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository ) {
+    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository) {
         this.productMapper = productMapper;
         this.productsRepository = productsRepository;
         this.measureRepository = measureRepository;
@@ -72,5 +73,19 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         products.setStatus(Status.DELETED);
         return productsRepository.save(products);
+    }
+
+    public long count() {
+        return productsRepository.count();
+    }
+
+    public Map<String, Long> getProductChartData() {
+        List<Products> allProducts = productsRepository.findAll();
+
+        return allProducts.stream()
+                .collect(Collectors.groupingBy(
+                        product -> product.getStatus().name(),
+                        Collectors.counting()
+                ));
     }
 }
