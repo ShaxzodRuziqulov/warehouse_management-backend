@@ -1,6 +1,5 @@
 package com.example.warehouse_management.entity;
 
-import com.example.warehouse_management.entity.enumirated.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 

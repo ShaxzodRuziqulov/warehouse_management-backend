@@ -6,7 +6,6 @@ import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
