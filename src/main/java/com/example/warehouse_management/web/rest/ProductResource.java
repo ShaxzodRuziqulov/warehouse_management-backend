@@ -58,10 +58,23 @@ public class ProductResource {
         long products = productService.count();
         return ResponseEntity.ok().body(products);
     }
+
     @GetMapping("/chart")
-    public ResponseEntity<?> getProductChartData(){
+    public ResponseEntity<?> getProductChartData() {
         Map<String, Long> result = productService.getProductChartData();
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveProducts() {
+        List<ProductDto> result = productService.findActiveProducts();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<?> getDeleted() {
+        List<ProductDto> result = productService.findDeleteProducts();
+        return ResponseEntity.ok().body(result);
     }
 
 }

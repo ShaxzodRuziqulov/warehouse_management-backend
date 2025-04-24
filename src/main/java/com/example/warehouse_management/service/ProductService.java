@@ -88,4 +88,17 @@ public class ProductService {
                         Collectors.counting()
                 ));
     }
+
+    public List<ProductDto> findActiveProducts() {
+        return productsRepository.findByStatus(Status.ACTIVE)
+                .stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
+    }
+    public List<ProductDto> findDeleteProducts() {
+        return productsRepository.findByStatus(Status.DELETED)
+                .stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

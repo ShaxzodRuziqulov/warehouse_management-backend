@@ -23,7 +23,7 @@ public class MeasureResource {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     private ResponseEntity<?> updateMeasure(@RequestBody MeasureDto measureDto, @PathVariable Long id) {
         if (!measureDto.getId().equals(id) && measureDto.getId() != 0) {
             return ResponseEntity.badRequest().body(measureDto);
