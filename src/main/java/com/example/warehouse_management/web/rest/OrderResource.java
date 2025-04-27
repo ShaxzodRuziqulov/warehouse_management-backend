@@ -26,9 +26,10 @@ public class OrderResource {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@RequestBody OrderDto orderDto, @PathVariable Long id) throws URISyntaxException {
-        if (orderDto.getId().equals(id) && orderDto.getId() != 0) {
+        if (!orderDto.getId().equals(id) || orderDto.getId() == 0) {
             return ResponseEntity.badRequest().body("invalid id");
         }
+
         OrderDto result = orderService.update(orderDto);
         return ResponseEntity.ok().body(result);
     }

@@ -7,6 +7,7 @@ import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +24,9 @@ public class IncomeService {
         this.wareHouseRepository = wareHouseRepository;
     }
 
-
+    @Transactional
     public IncomeDto create(IncomeDto incomeDto) {
         Income income = incomeMapper.toEntity(incomeDto);
-
 
         WareHouse wareHouse = wareHouseRepository.findById(incomeDto.getWareHouseId())
                 .orElseThrow(() -> new RuntimeException("Warehouse not found"));
@@ -40,12 +40,13 @@ public class IncomeService {
         wareHouse.setQuantity(newQuantity);
 
         wareHouseRepository.save(wareHouse);
-        income.setWareHouse(wareHouse);
 
+        income.setWareHouse(wareHouse);
         incomeRepository.save(income);
         return incomeMapper.toDto(income);
     }
 
+    @Transactional
     public IncomeDto update(IncomeDto incomeDto) {
         Income oldIncome = incomeRepository.findById(incomeDto.getId()).orElseThrow(() -> new RuntimeException("Income not found"));
         WareHouse wareHouse = wareHouseRepository.findById(incomeDto.getWareHouseId()).orElseThrow(() -> new RuntimeException("Warehouse not found"));
@@ -80,7 +81,8 @@ public class IncomeService {
                 .toDto(incomeRepository.findById(id)
                         .orElse(null));
     }
-    public long count(){
+
+    public long count() {
         return incomeRepository.count();
     }
 
