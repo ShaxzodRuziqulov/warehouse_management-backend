@@ -15,4 +15,7 @@ public interface ProductsRepository extends JpaRepository<Products, Long> {
     @Query("SELECT p FROM Products p WHERE p.status = :status")
     List<Products> findByStatus(@Param("status") Status status);
 
+    @Query("SELECT COUNT(p) FROM Products p WHERE p.status = :status")
+    long countByStatus(@Param("status") Status status);
+
 }

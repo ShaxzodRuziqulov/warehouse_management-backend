@@ -1,5 +1,6 @@
 package com.example.warehouse_management.web.rest;
 
+import com.example.warehouse_management.entity.Income;
 import com.example.warehouse_management.service.IncomeService;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class IncomeResource {
         if (!incomeDto.getId().equals(id) && incomeDto.getId() != 0) {
             return ResponseEntity.notFound().build();
         }
-        IncomeDto result = incomeService.update(incomeDto);
+        IncomeDto result = incomeService.update(id,incomeDto);
         return ResponseEntity.ok().body(result);
     }
 
@@ -42,6 +43,18 @@ public class IncomeResource {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         IncomeDto result = incomeService.findById(id);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/allActive")
+    public ResponseEntity<?> activeIncome() {
+        List<IncomeDto> result = incomeService.findByActiveIncome();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        Income result = incomeService.delete(id);
         return ResponseEntity.ok().body(result);
     }
 

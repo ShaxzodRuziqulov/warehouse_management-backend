@@ -67,6 +67,7 @@ public class ProductService {
         return productsRepository.findById(id).orElseGet(Products::new);
     }
 
+
     public Products deleteById(Long id) {
         Products products = productsRepository
                 .findById(id)
@@ -76,7 +77,7 @@ public class ProductService {
     }
 
     public long count() {
-        return productsRepository.count();
+        return productsRepository.countByStatus(Status.ACTIVE);
     }
 
     public Map<String, Long> getProductChartData() {
@@ -95,6 +96,7 @@ public class ProductService {
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
+
     public List<ProductDto> findDeleteProducts() {
         return productsRepository.findByStatus(Status.DELETED)
                 .stream()

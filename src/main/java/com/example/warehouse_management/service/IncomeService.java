@@ -2,6 +2,7 @@ package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Income;
 import com.example.warehouse_management.entity.WareHouse;
+import com.example.warehouse_management.entity.enumirated.Status;
 import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
@@ -27,9 +28,11 @@ public class IncomeService {
     @Transactional
     public IncomeDto create(IncomeDto incomeDto) {
         Income income = incomeMapper.toEntity(incomeDto);
+        income.setStatus(Status.ACTIVE);
 
-        WareHouse wareHouse = wareHouseRepository.findById(incomeDto.getWareHouseId())
-                .orElseThrow(() -> new RuntimeException("Warehouse not found"));
+        WareHouse wareHouse = wareHouseRepository.findByProductsIdAndMeasureId(
+                incomeDto.getProductsId(), incomeDto.getMeasureId()
+        ).orElseThrow(() -> new RuntimeException("Product with this measure not found in warehouse"));
 
         Double oldQuantity = wareHouse.getQuantity();
         if (oldQuantity == null) {
@@ -43,30 +46,48 @@ public class IncomeService {
 
         income.setWareHouse(wareHouse);
         incomeRepository.save(income);
+
         return incomeMapper.toDto(income);
     }
+
+
 
     @Transactional
-    public IncomeDto update(IncomeDto incomeDto) {
-        Income oldIncome = incomeRepository.findById(incomeDto.getId()).orElseThrow(() -> new RuntimeException("Income not found"));
-        WareHouse wareHouse = wareHouseRepository.findById(incomeDto.getWareHouseId()).orElseThrow(() -> new RuntimeException("Warehouse not found"));
+    public IncomeDto update(Long id, IncomeDto incomeDto) {
+        Income oldIncome = incomeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Income not found"));
 
-        double oldQuantity = oldIncome.getQuantity();
-        double newQuantity = incomeDto.getQuantity();
-        double diffQuantity = oldQuantity - newQuantity;
+        WareHouse wareHouse = wareHouseRepository.findByProductsIdAndMeasureId(
+                oldIncome.getWareHouse().getProducts().getId(),
+                oldIncome.getWareHouse().getMeasure().getId()
+        ).orElseThrow(() -> new RuntimeException("Product with this measure not found in warehouse"));
 
-        Double wareHouseQuantity = wareHouse.getQuantity();
-        if (wareHouseQuantity == null) wareHouseQuantity = 0.0;
+        Double oldQuantity = wareHouse.getQuantity();
+        if (oldQuantity == null) {
+            oldQuantity = 0.0;
+        }
 
-        wareHouse.setQuantity(wareHouseQuantity + diffQuantity);
+        double afterRemovingOldIncome = oldQuantity - oldIncome.getQuantity();
+        if (afterRemovingOldIncome < 0) {
+            afterRemovingOldIncome = 0.0;
+        }
+        wareHouse.setQuantity(afterRemovingOldIncome);
+
+        Double newQuantity = wareHouse.getQuantity() + incomeDto.getQuantity();
+        wareHouse.setQuantity(newQuantity);
+
         wareHouseRepository.save(wareHouse);
 
-        Income income = incomeMapper.toEntity(incomeDto);
-        income.setWareHouse(wareHouse);
+        oldIncome.setQuantity(incomeDto.getQuantity());
+        oldIncome.setPrice(incomeDto.getPrice());
+        oldIncome.setStatus(incomeDto.getStatus());
+        oldIncome.setCreatedAt(incomeDto.getCreatedAt());
 
-        incomeRepository.save(income);
-        return incomeMapper.toDto(income);
+        incomeRepository.save(oldIncome);
+
+        return incomeMapper.toDto(oldIncome);
     }
+
 
     public List<IncomeDto> findAll() {
         return incomeRepository
@@ -82,8 +103,16 @@ public class IncomeService {
                         .orElse(null));
     }
 
+    public List<IncomeDto> findByActiveIncome() {
+        return incomeRepository
+                .findByStatus(Status.ACTIVE)
+                .stream()
+                .map(incomeMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
     public long count() {
-        return incomeRepository.count();
+        return incomeRepository.countByStatus(Status.ACTIVE);
     }
 
     public List<IncomeDto> getLatestIncomes(int limit) {
@@ -95,9 +124,36 @@ public class IncomeService {
                         income.getQuantity(),
                         income.getMeasure().getId(),
                         income.getPrice(),
+                        income.getStatus(),
                         income.getCreatedAt()
                 ))
 
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public Income delete(Long id) {
+        Income income = incomeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Income not found"));
+
+        WareHouse wareHouse = income.getWareHouse();
+        if (wareHouse != null) {
+            Double currentQuantity = wareHouse.getQuantity();
+            if (currentQuantity == null) {
+                currentQuantity = 0.0;
+            }
+
+            if (currentQuantity < income.getQuantity()) {
+                throw new RuntimeException("Not enough stock to delete this income. Available: "
+                        + currentQuantity + ", Required: " + income.getQuantity());
+            }
+
+            wareHouse.setQuantity(currentQuantity - income.getQuantity());
+            wareHouseRepository.save(wareHouse);
+        }
+
+        income.setStatus(Status.DELETED);
+        return incomeRepository.save(income);
+    }
+
 }

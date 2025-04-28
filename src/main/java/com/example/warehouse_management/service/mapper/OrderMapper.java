@@ -1,6 +1,7 @@
 package com.example.warehouse_management.service.mapper;
 
 import com.example.warehouse_management.entity.Order;
+import com.example.warehouse_management.entity.Products;
 import com.example.warehouse_management.service.dto.OrderDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

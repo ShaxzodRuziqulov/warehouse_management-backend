@@ -1,5 +1,6 @@
 package com.example.warehouse_management.web.rest;
 
+import com.example.warehouse_management.entity.Order;
 import com.example.warehouse_management.service.OrderService;
 import com.example.warehouse_management.service.dto.OrderDto;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,17 @@ public class OrderResource {
     public ResponseEntity<?> count() {
         long result = orderService.count();
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/allActive")
+    public ResponseEntity<?> findAllActive() {
+        List<OrderDto> orderDto = orderService.findByActiveOrder();
+        return ResponseEntity.ok().body(orderDto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        Order order = orderService.deleteById(id);
+        return ResponseEntity.ok().body(order);
     }
 }

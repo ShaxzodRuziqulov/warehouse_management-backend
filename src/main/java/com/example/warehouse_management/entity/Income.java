@@ -1,5 +1,6 @@
 package com.example.warehouse_management.entity;
 
+import com.example.warehouse_management.entity.enumirated.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,4 +20,6 @@ public class Income extends BaseEntity {
     @ManyToOne
     private Measure measure;
     private Double price;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

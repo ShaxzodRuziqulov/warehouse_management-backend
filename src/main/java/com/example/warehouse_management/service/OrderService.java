@@ -2,6 +2,7 @@ package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Order;
 import com.example.warehouse_management.entity.WareHouse;
+import com.example.warehouse_management.entity.enumirated.Status;
 import com.example.warehouse_management.repository.OrderRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.OrderDto;
@@ -39,7 +40,8 @@ public class OrderService {
             wareHouse.setQuantity(newQuantity);
 
             wareHouseRepository.save(wareHouse);
-            order.setWareHouse(wareHouse); // Bu ham muhim
+            order.setWareHouse(wareHouse);
+            order.setStatus(Status.ACTIVE);
             orderRepository.save(order);
             return orderMapper.toDto(order);
         } else {
@@ -56,8 +58,8 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Warehouse not found"));
 
         double oldOrderQuantity = oldOrder.getQuantity();
-        double newOrderQuantity = orderDto.getQuantity(); // yangi buyurtma miqdori
-        double quantityDifference = newOrderQuantity - oldOrderQuantity; // qancha farq borligini aniqlaymiz
+        double newOrderQuantity = orderDto.getQuantity();
+        double quantityDifference = newOrderQuantity - oldOrderQuantity;
 
         Double wareHouseQuantity = wareHouse.getQuantity();
         if (wareHouseQuantity == null) {
@@ -65,21 +67,19 @@ public class OrderService {
         }
 
         if (quantityDifference > 0) {
-            // Buyurtma miqdori oshirilmoqda => omborda yetarli mahsulot bo'lishi kerak
             if (wareHouseQuantity < quantityDifference) {
                 throw new RuntimeException("Insufficient stock. Available: " + wareHouseQuantity);
             }
             wareHouse.setQuantity(wareHouseQuantity - quantityDifference);
         } else if (quantityDifference < 0) {
-            // Buyurtma miqdori kamaytirilmoqda => omborga ortiqcha mahsulot qaytariladi
             wareHouse.setQuantity(wareHouseQuantity + Math.abs(quantityDifference));
         }
-        // Agar quantityDifference == 0 bo'lsa, hech narsa o'zgarmaydi
 
         wareHouseRepository.save(wareHouse);
 
         oldOrder.setQuantity(newOrderQuantity);
         oldOrder.setWareHouse(wareHouse);
+        oldOrder.setStatus(orderDto.getStatus());
 
         orderRepository.save(oldOrder);
 
@@ -100,6 +100,35 @@ public class OrderService {
     }
 
     public long count() {
-        return orderRepository.count();
+        return orderRepository.countByStatus(Status.ACTIVE);
     }
+
+    public List<OrderDto> findByActiveOrder() {
+        return orderRepository
+                .findByStatus(Status.ACTIVE)
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Order deleteById(Long id) {
+        Order order = orderRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        WareHouse wareHouse = order.getWareHouse();
+        if (wareHouse != null) {
+            Double oldQuantity = wareHouse.getQuantity();
+            if (oldQuantity == null) {
+                oldQuantity = 0.0;
+            }
+            wareHouse.setQuantity(oldQuantity + order.getQuantity());
+            wareHouseRepository.save(wareHouse);
+        }
+
+        order.setStatus(Status.DELETED);
+        return orderRepository.save(order);
+    }
+
 }
