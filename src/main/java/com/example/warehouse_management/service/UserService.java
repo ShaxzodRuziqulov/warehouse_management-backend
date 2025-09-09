@@ -1,14 +1,13 @@
 package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.User;
-import com.example.warehouse_management.entity.enumirated.Status;
+import com.example.warehouse_management.entity.enumirated.UserStatus;
 import com.example.warehouse_management.repository.UserRepository;
 import com.example.warehouse_management.service.dto.UserDto;
 import com.example.warehouse_management.service.mapper.UserMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class UserService {
     public UserDto create(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setStatus(Status.ACTIVE);
+        user.setUserStatus(UserStatus.ACTIVE);
         user = userRepository.save(user);
         return userMapper.toDto(user);
     }
@@ -58,7 +57,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setStatus(Status.DELETED);
+        user.setUserStatus(UserStatus.DELETED);
 
         return userRepository.save(user);
     }

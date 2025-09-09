@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1750401452823-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="measure"/>
+            </not>
+        </preConditions>
+        <createTable tableName="measure">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1750401613329-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="products"/>
+            </not>
+        </preConditions>
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="product_status" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1750401835748-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="firstname" type="varchar(255)"/>
+            <column name="lastname" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="user_status" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1750401216684-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="income"/>
+            </not>
+        </preConditions>
+        <createTable tableName="income">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(6)" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="double precision"/>
+            <column name="quantity" type="double precision"/>
+            <column name="income_status" type="varchar(255)"/>
+
+            <column name="measure_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="products_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ware_house_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="income"
+                                 baseColumnNames="ware_house_id"
+                                 constraintName="fk_ware_house"
+                                 referencedTableName="ware_house"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="income"
+                                 baseColumnNames="measure_id"
+                                 constraintName="fk_measure"
+                                 referencedTableName="measure"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="income"
+                                 baseColumnNames="products_id"
+                                 constraintName="fk_products"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+
+    </changeSet>
+    <changeSet id="1750660146331-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="orders"/>
+            </not>
+        </preConditions>
+        <createTable tableName="orders">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="double"/>
+            <column name="order_status" type="varchar(255)"/>
+            <column name="measure_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="products_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ware_house_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="ware_house_id"
+                                 constraintName="fk_ware_house"
+                                 referencedTableName="ware_house"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="measure_id"
+                                 constraintName="fk_measure"
+                                 referencedTableName="measure"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="products_id"
+                                 constraintName="fk_products"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="1750680901680-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ware_house"/>
+            </not>
+        </preConditions>
+        <createTable tableName="ware_house">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="double"/>
+            <column name="measure_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="products_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="products_id" constraintName="fk_products"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="measure_id" constraintName="fk_measure"
+                                 referencedTableName="measure"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

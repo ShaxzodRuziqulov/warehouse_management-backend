@@ -2,7 +2,7 @@ package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Order;
 import com.example.warehouse_management.entity.WareHouse;
-import com.example.warehouse_management.entity.enumirated.Status;
+import com.example.warehouse_management.entity.enumirated.OrderStatus;
 import com.example.warehouse_management.repository.OrderRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.OrderDto;
@@ -41,7 +41,7 @@ public class OrderService {
 
             wareHouseRepository.save(wareHouse);
             order.setWareHouse(wareHouse);
-            order.setStatus(Status.ACTIVE);
+            order.setOrderStatus(OrderStatus.ACTIVE);
             orderRepository.save(order);
             return orderMapper.toDto(order);
         } else {
@@ -79,7 +79,7 @@ public class OrderService {
 
         oldOrder.setQuantity(newOrderQuantity);
         oldOrder.setWareHouse(wareHouse);
-        oldOrder.setStatus(orderDto.getStatus());
+        oldOrder.setOrderStatus(orderDto.getOrderStatus());
 
         orderRepository.save(oldOrder);
 
@@ -100,12 +100,12 @@ public class OrderService {
     }
 
     public long count() {
-        return orderRepository.countByStatus(Status.ACTIVE);
+        return orderRepository.countByStatus(OrderStatus.ACTIVE);
     }
 
     public List<OrderDto> findByActiveOrder() {
         return orderRepository
-                .findByStatus(Status.ACTIVE)
+                .findByStatus(OrderStatus.ACTIVE)
                 .stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
@@ -127,7 +127,7 @@ public class OrderService {
             wareHouseRepository.save(wareHouse);
         }
 
-        order.setStatus(Status.DELETED);
+        order.setOrderStatus(OrderStatus.DELETED);
         return orderRepository.save(order);
     }
 

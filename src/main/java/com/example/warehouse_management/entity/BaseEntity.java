@@ -1,7 +1,6 @@
 package com.example.warehouse_management.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Data
 @MappedSuperclass
 @EntityListeners(AutoCloseable.class)
 public class BaseEntity {

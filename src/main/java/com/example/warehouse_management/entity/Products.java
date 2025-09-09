@@ -1,10 +1,12 @@
 package com.example.warehouse_management.entity;
 
-import com.example.warehouse_management.entity.enumirated.Status;
+import com.example.warehouse_management.entity.enumirated.ProductStatus;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Products {
     @Id
@@ -14,5 +16,5 @@ public class Products {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ProductStatus productStatus;
 }

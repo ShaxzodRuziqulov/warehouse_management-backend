@@ -3,7 +3,7 @@ package com.example.warehouse_management.service;
 import com.example.warehouse_management.entity.Measure;
 import com.example.warehouse_management.entity.Products;
 import com.example.warehouse_management.entity.WareHouse;
-import com.example.warehouse_management.entity.enumirated.Status;
+import com.example.warehouse_management.entity.enumirated.ProductStatus;
 import com.example.warehouse_management.repository.MeasureRepository;
 import com.example.warehouse_management.repository.ProductsRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
@@ -34,7 +34,7 @@ public class ProductService {
     public ProductDto create(ProductDto productDto) {
         Products result = productMapper.toEntity(productDto);
 
-        result.setStatus(Status.ACTIVE);
+        result.setProductStatus(ProductStatus.ACTIVE);
 
         result = productsRepository.save(result);
         Measure measure = measureRepository.findById(productDto.getMeasureId())
@@ -72,12 +72,12 @@ public class ProductService {
         Products products = productsRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        products.setStatus(Status.DELETED);
+        products.setProductStatus(ProductStatus.DELETED);
         return productsRepository.save(products);
     }
 
     public long count() {
-        return productsRepository.countByStatus(Status.ACTIVE);
+        return productsRepository.countByStatus(ProductStatus.ACTIVE);
     }
 
     public Map<String, Long> getProductChartData() {
@@ -85,20 +85,20 @@ public class ProductService {
 
         return allProducts.stream()
                 .collect(Collectors.groupingBy(
-                        product -> product.getStatus().name(),
+                        product -> product.getProductStatus().name(),
                         Collectors.counting()
                 ));
     }
 
     public List<ProductDto> findActiveProducts() {
-        return productsRepository.findByStatus(Status.ACTIVE)
+        return productsRepository.findByStatus(ProductStatus.ACTIVE)
                 .stream()
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public List<ProductDto> findDeleteProducts() {
-        return productsRepository.findByStatus(Status.DELETED)
+        return productsRepository.findByStatus(ProductStatus.DELETED)
                 .stream()
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());

@@ -1,15 +1,14 @@
 package com.example.warehouse_management.service.dto;
 
-import com.example.warehouse_management.entity.enumirated.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.warehouse_management.entity.enumirated.IncomeStatus;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class IncomeDto {
     private Long id;
 
@@ -20,7 +19,7 @@ public class IncomeDto {
 
     private Long measureId;
     private Double price;
-    private Status status;
+    private IncomeStatus incomeStatus;
     private LocalDateTime createdAt;
 
 }

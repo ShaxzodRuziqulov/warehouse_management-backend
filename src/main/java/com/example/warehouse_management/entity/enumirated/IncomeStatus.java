@@ -1,5 +1,5 @@
 package com.example.warehouse_management.entity.enumirated;
 
-public enum Status {
+public enum IncomeStatus {
     ACTIVE,INACTIVE,DELETED
 }

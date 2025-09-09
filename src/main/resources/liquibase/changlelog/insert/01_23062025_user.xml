@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1750683328355-1" author="Shaxzod">
+        <sql>
+            UPDATE income set income_status=status
+        </sql>
+    </changeSet>
+
+    <changeSet id="1750684177649-1" author="Shaxzod">
+        <sql>
+            UPDATE users set user_status=status
+        </sql>
+    </changeSet>
+
+    <changeSet id="1750684279267-1" author="Shaxzod">
+        <sql>
+            UPDATE orders set order_status=status
+        </sql>
+    </changeSet>
+
+    <changeSet id="1750684346259-1" author="Shaxzod">
+        <sql>
+            UPDATE products set product_status=status
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

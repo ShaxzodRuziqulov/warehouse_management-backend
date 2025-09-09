@@ -2,11 +2,12 @@ package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Income;
 import com.example.warehouse_management.entity.WareHouse;
-import com.example.warehouse_management.entity.enumirated.Status;
+import com.example.warehouse_management.entity.enumirated.IncomeStatus;
 import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,11 +29,11 @@ public class IncomeService {
     @Transactional
     public IncomeDto create(IncomeDto incomeDto) {
         Income income = incomeMapper.toEntity(incomeDto);
-        income.setStatus(Status.ACTIVE);
+        income.setIncomeStatus(IncomeStatus.ACTIVE);
 
         WareHouse wareHouse = wareHouseRepository.findByProductsIdAndMeasureId(
                 incomeDto.getProductsId(), incomeDto.getMeasureId()
-        ).orElseThrow(() -> new RuntimeException("Product with this measure not found in warehouse"));
+        ).orElseThrow(() -> new EntityNotFoundException("Product with this measure not found in warehouse"));
 
         Double oldQuantity = wareHouse.getQuantity();
         if (oldQuantity == null) {
@@ -49,8 +50,6 @@ public class IncomeService {
 
         return incomeMapper.toDto(income);
     }
-
-
 
     @Transactional
     public IncomeDto update(Long id, IncomeDto incomeDto) {
@@ -80,7 +79,7 @@ public class IncomeService {
 
         oldIncome.setQuantity(incomeDto.getQuantity());
         oldIncome.setPrice(incomeDto.getPrice());
-        oldIncome.setStatus(incomeDto.getStatus());
+        oldIncome.setIncomeStatus(incomeDto.getIncomeStatus());
         oldIncome.setCreatedAt(incomeDto.getCreatedAt());
 
         incomeRepository.save(oldIncome);
@@ -105,14 +104,14 @@ public class IncomeService {
 
     public List<IncomeDto> findByActiveIncome() {
         return incomeRepository
-                .findByStatus(Status.ACTIVE)
+                .findByStatus(IncomeStatus.ACTIVE)
                 .stream()
                 .map(incomeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public long count() {
-        return incomeRepository.countByStatus(Status.ACTIVE);
+        return incomeRepository.countByStatus(IncomeStatus.ACTIVE);
     }
 
     public List<IncomeDto> getLatestIncomes(int limit) {
@@ -124,7 +123,7 @@ public class IncomeService {
                         income.getQuantity(),
                         income.getMeasure().getId(),
                         income.getPrice(),
-                        income.getStatus(),
+                        income.getIncomeStatus(),
                         income.getCreatedAt()
                 ))
 
@@ -152,7 +151,7 @@ public class IncomeService {
             wareHouseRepository.save(wareHouse);
         }
 
-        income.setStatus(Status.DELETED);
+        income.setIncomeStatus(IncomeStatus.DELETED);
         return incomeRepository.save(income);
     }
 

@@ -2,6 +2,12 @@ server:
   port: 8080
 
 spring:
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+    enabled: true
+    contexts: dev
+    drop-first: false
+    clear-checksums: false
   datasource:
     url: jdbc:postgresql://localhost:5432/warehouse_management
     username: postgres

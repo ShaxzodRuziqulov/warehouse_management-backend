@@ -1,13 +1,15 @@
 package com.example.warehouse_management.service.dto;
 
-import com.example.warehouse_management.entity.enumirated.Status;
-import lombok.Data;
+import com.example.warehouse_management.entity.enumirated.ProductStatus;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ProductDto {
     private Long id;
     private String name;
     private String description;
-    private Status status;
+    private ProductStatus productStatus;
     private Long measureId;
 }

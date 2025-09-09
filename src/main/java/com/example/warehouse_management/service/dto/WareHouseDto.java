@@ -1,11 +1,13 @@
 package com.example.warehouse_management.service.dto;
 
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class WareHouseDto {
     private Long id;
 

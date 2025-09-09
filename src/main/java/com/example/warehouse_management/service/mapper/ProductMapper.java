@@ -7,9 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper extends EntityMapper<ProductDto, Products> {
-    @Mapping(source = "status", target = "status")
     ProductDto toDto(Products products);
 
-    @Mapping(source = "status", target = "status")
     Products toEntity(ProductDto productDto);
 }
