@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/warehouse")
+@RequestMapping("/api/admin/warehouse")
 public class WareHouseResource {
     private final WareHouseService wareHouseService;
 

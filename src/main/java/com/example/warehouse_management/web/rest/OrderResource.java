@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/admin/order")
 public class OrderResource {
     private final OrderService orderService;
 

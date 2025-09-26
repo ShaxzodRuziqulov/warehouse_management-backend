@@ -36,21 +36,103 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="1750401835748-1" author="Shaxzod">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="users"/>
-            </not>
-        </preConditions>
+    <changeSet id="1758790763737-1" author="shaxzod">
         <createTable tableName="users">
-            <column name="id" type="bigint" autoIncrement="true">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="firstname" type="varchar(255)"/>
-            <column name="lastname" type="varchar(255)"/>
-            <column name="password" type="varchar(255)"/>
-            <column name="user_status" type="varchar(255)"/>
+
+            <column name="firstname" type="VARCHAR(255)"/>
+
+            <column name="lastname" type="VARCHAR(255)"/>
+
+            <column name="username" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+
+            <column name="password" type="VARCHAR(255)"/>
+
+            <column name="user_status" type="VARCHAR(50)"/>
         </createTable>
+    </changeSet>
+
+    <changeSet id="1758790768376-1" author="shaxzod">
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="description" type="VARCHAR(255)"/>
+
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1758790779431-1" author="shaxzod">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey
+                columnNames="user_id, role_id"
+                tableName="user_roles"
+                constraintName="pk_user_roles"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="user_roles"
+                referencedColumnNames="id"
+                referencedTableName="users"
+                onDelete="CASCADE"
+                constraintName="fk_user_roles_user"/>
+
+        <addForeignKeyConstraint
+                baseColumnNames="role_id"
+                baseTableName="user_roles"
+                referencedColumnNames="id"
+                referencedTableName="roles"
+                onDelete="CASCADE"
+                constraintName="fk_user_roles_role"/>
+    </changeSet>
+
+    <changeSet id="1750680901680-1" author="Shaxzod">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="ware_house"/>
+            </not>
+        </preConditions>
+        <createTable tableName="ware_house">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="double"/>
+            <column name="measure_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="products_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="products_id" constraintName="fk_products"
+                                 referencedTableName="products"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="measure_id" constraintName="fk_measure"
+                                 referencedTableName="measure"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="1750401216684-1" author="Shaxzod">
@@ -156,36 +238,5 @@
                                  onUpdate="CASCADE"/>
     </changeSet>
 
-    <changeSet id="1750680901680-1" author="Shaxzod">
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="ware_house"/>
-            </not>
-        </preConditions>
-        <createTable tableName="ware_house">
-            <column name="id" autoIncrement="true" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="created_at" type="timestamp(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="timestamp(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="quantity" type="double"/>
-            <column name="measure_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="products_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="products_id" constraintName="fk_products"
-                                 referencedTableName="products"
-                                 referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="ware_house" baseColumnNames="measure_id" constraintName="fk_measure"
-                                 referencedTableName="measure"
-                                 referencedColumnNames="id"/>
-    </changeSet>
 
 </databaseChangeLog>

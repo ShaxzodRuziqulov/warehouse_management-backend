@@ -28,11 +28,13 @@ public class UserService {
         User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUserStatus(UserStatus.ACTIVE);
+
         user = userRepository.save(user);
         return userMapper.toDto(user);
     }
 
     public UserDto update(UserDto userDto) {
+
         User user = userMapper.toEntity(userDto);
         user = userRepository.save(user);
         return userMapper.toDto(user);

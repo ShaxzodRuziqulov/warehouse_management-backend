@@ -3,6 +3,8 @@ package com.example.warehouse_management.service.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class UserDto {
@@ -11,4 +13,5 @@ public class UserDto {
     private String lastname;
     private String password;
     private String username;
+    private Set<RoleDTO> roles;
 }

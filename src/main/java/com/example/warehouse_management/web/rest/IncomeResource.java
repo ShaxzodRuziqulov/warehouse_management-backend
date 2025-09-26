@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/income")
+@RequestMapping("/api/admin/income")
 public class IncomeResource {
     private final IncomeService incomeService;
 

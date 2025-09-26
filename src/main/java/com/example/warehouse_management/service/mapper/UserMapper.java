@@ -1,6 +1,8 @@
 package com.example.warehouse_management.service.mapper;
 
+import com.example.warehouse_management.entity.Role;
 import com.example.warehouse_management.entity.User;
+import com.example.warehouse_management.service.dto.RoleDTO;
 import com.example.warehouse_management.service.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +14,5 @@ public interface UserMapper extends EntityMapper<UserDto, User> {
     @Mapping(source = "username", target = "username")
     User toEntity(UserDto userDto);
 
+    RoleDTO toRoleDTO(Role role);
 }
