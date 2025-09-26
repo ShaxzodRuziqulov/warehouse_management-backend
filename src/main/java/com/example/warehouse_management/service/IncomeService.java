@@ -124,6 +124,7 @@ public class IncomeService {
                         income.getMeasure().getId(),
                         income.getPrice(),
                         income.getIncomeStatus(),
+                        income.getSupplier().getId(),
                         income.getCreatedAt()
                 ))
 

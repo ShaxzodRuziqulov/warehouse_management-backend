@@ -17,4 +17,7 @@ public class Products {
 
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
+
+    @ManyToOne
+    private Category category;
 }

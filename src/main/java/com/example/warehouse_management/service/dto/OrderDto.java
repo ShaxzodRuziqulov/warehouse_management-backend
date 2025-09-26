@@ -21,5 +21,6 @@ public class OrderDto {
     private LocalDateTime updatedAt;
 
     private Double wareHouseQuantity;
+    private Long customerId;
 
 }

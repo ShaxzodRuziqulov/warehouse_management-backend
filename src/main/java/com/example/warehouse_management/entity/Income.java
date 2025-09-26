@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.function.Suppliers;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -24,4 +25,7 @@ public class Income extends BaseEntity {
     private Double price;
     @Enumerated(EnumType.STRING)
     private IncomeStatus incomeStatus;
+
+    @ManyToOne
+    private Supplier supplier;
 }

@@ -20,6 +20,7 @@ public class IncomeDto {
     private Long measureId;
     private Double price;
     private IncomeStatus incomeStatus;
+    private Long supplierId;
     private LocalDateTime createdAt;
 
 }

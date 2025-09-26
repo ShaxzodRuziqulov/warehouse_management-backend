@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1758885865558-1" author="Shaxzod">
+        <createTable tableName="category">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="varchar"/>
+
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1758886021698-1" author="Shaxzod">
+        <createTable tableName="customer">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar"/>
+            <column name="company_name" type="varchar"/>
+            <column name="phone_number" type="varchar"/>
+            <column name="customer_status" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1758886305756-1" author="Shaxzod">
+        <createTable tableName="supplier">
+            <column name="id" type="varchar" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="supplier_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_name" type="varchar"/>
+            <column name="phone_number" type="varchar"/>
+            <column name="address" type="varchar"/>
+            <column name="SUPPLIER_STATUS" type="varchar"/>
+
+            <column name="created_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1758886774445-1" author="Shaxzod">
+        <addColumn tableName="income">
+            <column name="supplier_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+        </addColumn>
+
+        <addColumn tableName="orders">
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addColumn tableName="products">
+            <column name="category_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="income" baseColumnNames="supplier_id" constraintName="fk_supplier"
+                                 referencedTableName="supplier"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="orders" baseColumnNames="customer_id" constraintName="fk_customer"
+                                 referencedTableName="customer"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="products" baseColumnNames="category_id" constraintName="fk_category"
+                                 referencedTableName="category"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

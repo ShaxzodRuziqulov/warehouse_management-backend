@@ -12,4 +12,5 @@ public class ProductDto {
     private String description;
     private ProductStatus productStatus;
     private Long measureId;
+    private Long categoryId;
 }
