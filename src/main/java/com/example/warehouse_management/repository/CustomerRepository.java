@@ -1,8 +1,6 @@
 package com.example.warehouse_management.repository;
 
 import com.example.warehouse_management.entity.Customer;
-import com.example.warehouse_management.entity.enumirated.CustomerStatus;
-import com.example.warehouse_management.service.dto.CustomerDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

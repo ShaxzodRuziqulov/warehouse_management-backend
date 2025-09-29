@@ -4,7 +4,6 @@ import com.example.warehouse_management.entity.Customer;
 import com.example.warehouse_management.entity.Order;
 import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.entity.enumirated.OrderStatus;
-import com.example.warehouse_management.repository.CategoryRepository;
 import com.example.warehouse_management.repository.CustomerRepository;
 import com.example.warehouse_management.repository.OrderRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;

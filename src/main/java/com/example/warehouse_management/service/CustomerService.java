@@ -68,8 +68,4 @@ public class CustomerService {
                 pageable
         );
     }
-
-    public Page<Customer> getAll(Pageable pageable) {
-        return customerRepository.findAllCustomers(pageable);
-    }
 }
