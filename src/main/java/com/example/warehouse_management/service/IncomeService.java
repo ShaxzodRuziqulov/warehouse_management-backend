@@ -1,9 +1,11 @@
 package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Income;
+import com.example.warehouse_management.entity.Supplier;
 import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.entity.enumirated.IncomeStatus;
 import com.example.warehouse_management.repository.IncomeRepository;
+import com.example.warehouse_management.repository.SupplierRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
@@ -19,11 +21,13 @@ public class IncomeService {
     private final IncomeRepository incomeRepository;
     private final IncomeMapper incomeMapper;
     private final WareHouseRepository wareHouseRepository;
+    private final SupplierRepository supplierRepository;
 
-    public IncomeService(IncomeRepository incomeRepository, IncomeMapper incomeMapper, WareHouseRepository wareHouseRepository) {
+    public IncomeService(IncomeRepository incomeRepository, IncomeMapper incomeMapper, WareHouseRepository wareHouseRepository, SupplierRepository supplierRepository) {
         this.incomeRepository = incomeRepository;
         this.incomeMapper = incomeMapper;
         this.wareHouseRepository = wareHouseRepository;
+        this.supplierRepository = supplierRepository;
     }
 
     @Transactional
@@ -39,6 +43,8 @@ public class IncomeService {
         if (oldQuantity == null) {
             oldQuantity = 0.0;
         }
+        Supplier supplier = supplierRepository.findById(incomeDto.getSupplierId()).orElseThrow(() -> new RuntimeException("Supplier not found"));
+        income.setSupplier(supplier);
 
         Double newQuantity = oldQuantity + incomeDto.getQuantity();
         wareHouse.setQuantity(newQuantity);

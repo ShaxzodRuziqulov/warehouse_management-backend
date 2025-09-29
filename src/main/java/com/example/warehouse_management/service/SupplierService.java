@@ -1,6 +1,7 @@
 package com.example.warehouse_management.service;
 
 import com.example.warehouse_management.entity.Supplier;
+import com.example.warehouse_management.entity.enumirated.SupplierStatus;
 import com.example.warehouse_management.repository.SupplierRepository;
 import com.example.warehouse_management.service.dto.SupplierDto;
 import com.example.warehouse_management.service.mapper.SupplierMapper;
@@ -21,6 +22,7 @@ public class SupplierService {
 
     public SupplierDto create(SupplierDto supplierDto) {
         Supplier supplier = supplierMapper.toEntity(supplierDto);
+        supplier.setSupplierStatus(SupplierStatus.ACTIVE);
         return supplierMapper.toDto(supplierRepository.save(supplier));
     }
 
@@ -41,8 +43,25 @@ public class SupplierService {
 
     public SupplierDto delete(Long id) {
         Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        supplier.setSupplierStatus(SupplierStatus.DELETED);
+        Supplier update = supplierRepository.save(supplier);
+        return supplierMapper.toDto(update);
+    }
+
+    public SupplierDto deleted(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found"));
         SupplierDto supplierDto = supplierMapper.toDto(supplier);
         supplierRepository.delete(supplier);
         return supplierDto;
+    }
+
+    public List<SupplierDto> findByStatus(String type) {
+        List<Supplier> itemList = switch (type.toUpperCase()) {
+            case "ACTIVE" -> supplierRepository.findBySupplierStatus(SupplierStatus.ACTIVE);
+            case "INACTIVE" -> supplierRepository.findBySupplierStatus(SupplierStatus.INACTIVE);
+            default -> supplierRepository.findBySupplierStatus(SupplierStatus.DELETED);
+        };
+        return itemList.stream().map(supplierMapper::toDto).collect(Collectors.toList());
     }
 }

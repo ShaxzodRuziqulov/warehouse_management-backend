@@ -1,9 +1,11 @@
 package com.example.warehouse_management.service;
 
+import com.example.warehouse_management.entity.Category;
 import com.example.warehouse_management.entity.Measure;
 import com.example.warehouse_management.entity.Products;
 import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.entity.enumirated.ProductStatus;
+import com.example.warehouse_management.repository.CategoryRepository;
 import com.example.warehouse_management.repository.MeasureRepository;
 import com.example.warehouse_management.repository.ProductsRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
@@ -21,14 +23,14 @@ public class ProductService {
     private final ProductsRepository productsRepository;
     private final MeasureRepository measureRepository;
     private final WareHouseRepository wareHouseRepository;
+    private final CategoryRepository categoryRepository;
 
-
-    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository) {
+    public ProductService(ProductMapper productMapper, ProductsRepository productsRepository, MeasureRepository measureRepository, WareHouseRepository wareHouseRepository, CategoryRepository categoryRepository) {
         this.productMapper = productMapper;
         this.productsRepository = productsRepository;
         this.measureRepository = measureRepository;
         this.wareHouseRepository = wareHouseRepository;
-
+        this.categoryRepository = categoryRepository;
     }
 
     public ProductDto create(ProductDto productDto) {
@@ -40,6 +42,8 @@ public class ProductService {
         Measure measure = measureRepository.findById(productDto.getMeasureId())
                 .orElseThrow(() -> new RuntimeException("Measure not found"));
 
+        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
+        result.setCategory(category);
         WareHouse wareHouse = new WareHouse();
         wareHouse.setProducts(result);
         wareHouse.setQuantity(0.0);

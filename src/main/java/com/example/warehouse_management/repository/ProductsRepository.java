@@ -17,4 +17,5 @@ public interface ProductsRepository extends JpaRepository<Products, Long> {
     @Query("SELECT COUNT(p) FROM Products p WHERE p.productStatus = :status")
     long countByStatus(@Param("status") ProductStatus productStatus);
 
+    boolean existsByCategoryId(Long id);
 }

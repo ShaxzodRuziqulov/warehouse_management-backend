@@ -1,8 +1,11 @@
 package com.example.warehouse_management.service;
 
+import com.example.warehouse_management.entity.Customer;
 import com.example.warehouse_management.entity.Order;
 import com.example.warehouse_management.entity.WareHouse;
 import com.example.warehouse_management.entity.enumirated.OrderStatus;
+import com.example.warehouse_management.repository.CategoryRepository;
+import com.example.warehouse_management.repository.CustomerRepository;
 import com.example.warehouse_management.repository.OrderRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.OrderDto;
@@ -18,11 +21,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final WareHouseRepository wareHouseRepository;
+    private final CustomerRepository customerRepository;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, WareHouseRepository wareHouseRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, WareHouseRepository wareHouseRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.wareHouseRepository = wareHouseRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Transactional
@@ -39,6 +44,8 @@ public class OrderService {
             Double newQuantity = oldQuantity - order.getQuantity();
             wareHouse.setQuantity(newQuantity);
 
+            Customer customer = customerRepository.findById(orderDto.getCustomerId()).orElseThrow(() -> new RuntimeException("Customer not found"));
+            order.setCustomer(customer);
             wareHouseRepository.save(wareHouse);
             order.setWareHouse(wareHouse);
             order.setOrderStatus(OrderStatus.ACTIVE);
