@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface WareHouseRepository extends JpaRepository<WareHouse, Long> {
     Optional<WareHouse> findByProductsIdAndMeasureId(Long productsId, Long measureId);
 
+
 }

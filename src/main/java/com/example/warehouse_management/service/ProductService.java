@@ -38,16 +38,18 @@ public class ProductService {
 
         result.setProductStatus(ProductStatus.ACTIVE);
 
-        result = productsRepository.save(result);
-        Measure measure = measureRepository.findById(productDto.getMeasureId())
-                .orElseThrow(() -> new RuntimeException("Measure not found"));
-
         Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(() -> new RuntimeException("Category not found"));
         result.setCategory(category);
+
+        result = productsRepository.save(result);
+//        Measure measure = measureRepository.findById(productDto.getMeasureId())
+//                .orElseThrow(() -> new RuntimeException("Measure not found"));
+
+
         WareHouse wareHouse = new WareHouse();
         wareHouse.setProducts(result);
         wareHouse.setQuantity(0.0);
-        wareHouse.setMeasure(measure);
+//        wareHouse.setMeasure(measure);
         wareHouseRepository.save(wareHouse);
 
         return productMapper.toDto(result);

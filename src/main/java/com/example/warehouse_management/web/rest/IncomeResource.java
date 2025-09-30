@@ -3,6 +3,12 @@ package com.example.warehouse_management.web.rest;
 import com.example.warehouse_management.entity.Income;
 import com.example.warehouse_management.service.IncomeService;
 import com.example.warehouse_management.service.dto.IncomeDto;
+import com.example.warehouse_management.service.dto.IncomeFilterDto;
+import com.example.warehouse_management.service.request.IncomeFilterRequest;
+import com.example.warehouse_management.service.request.PageResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +36,7 @@ public class IncomeResource {
         if (!incomeDto.getId().equals(id) && incomeDto.getId() != 0) {
             return ResponseEntity.notFound().build();
         }
-        IncomeDto result = incomeService.update(id,incomeDto);
+        IncomeDto result = incomeService.update(id, incomeDto);
         return ResponseEntity.ok().body(result);
     }
 
@@ -46,7 +52,7 @@ public class IncomeResource {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/allActive")
+    @GetMapping("/all-active")
     public ResponseEntity<?> activeIncome() {
         List<IncomeDto> result = incomeService.findByActiveIncome();
         return ResponseEntity.ok().body(result);
@@ -69,4 +75,18 @@ public class IncomeResource {
         List<IncomeDto> result = incomeService.getLatestIncomes(limit);
         return ResponseEntity.ok().body(result);
     }
+
+    @PostMapping("/paging")
+    public ResponseEntity<?> paging(@RequestBody IncomeFilterRequest filterRequest,
+                                    Pageable pageable) {
+        Page<IncomeFilterDto> result = incomeService.findAllWithFilter(filterRequest, pageable);
+        return ResponseEntity.ok(new PageResponse<>(result));
+    }
+    @GetMapping("/incomes")
+    public Page<IncomeDto> getAllIncomes(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return incomeService.getAllIncomes(pageable);
+    }
+
 }

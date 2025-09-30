@@ -14,14 +14,14 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
 
     @Query("""
-    SELECT c
-    FROM Customer c
-    WHERE (:customerName IS NULL OR LOWER(c.customerName) LIKE LOWER(CONCAT('%', :customerName, '%')))
-      AND (:companyName IS NULL OR LOWER(c.companyName) LIKE LOWER(CONCAT('%', :companyName, '%')))
-      AND (:phoneNumber IS NULL OR c.phoneNumber LIKE CONCAT('%', :phoneNumber, '%'))
-      AND (:address IS NULL OR LOWER(c.address) LIKE LOWER(CONCAT('%', :address, '%')))
-      AND (:customerStatus IS NULL OR c.customerStatus = :customerStatus)
-""")
+                SELECT c
+                FROM Customer c
+                WHERE (:customerName IS NULL OR LOWER(c.customerName) LIKE LOWER(CONCAT('%', :customerName, '%')))
+                  AND (:companyName IS NULL OR LOWER(c.companyName) LIKE LOWER(CONCAT('%', :companyName, '%')))
+                  AND (:phoneNumber IS NULL OR c.phoneNumber LIKE CONCAT('%', :phoneNumber, '%'))
+                  AND (:address IS NULL OR LOWER(c.address) LIKE LOWER(CONCAT('%', :address, '%')))
+                  AND (:customerStatus IS NULL OR c.customerStatus = :customerStatus)
+            """)
     Page<Customer> findAllWithFilter(
             @Param("customerName") String customerName,
 //            @Param("companyName") String companyName,

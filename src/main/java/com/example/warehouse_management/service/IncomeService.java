@@ -8,8 +8,12 @@ import com.example.warehouse_management.repository.IncomeRepository;
 import com.example.warehouse_management.repository.SupplierRepository;
 import com.example.warehouse_management.repository.WareHouseRepository;
 import com.example.warehouse_management.service.dto.IncomeDto;
+import com.example.warehouse_management.service.dto.IncomeFilterDto;
 import com.example.warehouse_management.service.mapper.IncomeMapper;
+import com.example.warehouse_management.service.request.IncomeFilterRequest;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -161,5 +165,18 @@ public class IncomeService {
         income.setIncomeStatus(IncomeStatus.DELETED);
         return incomeRepository.save(income);
     }
+
+    public Page<IncomeFilterDto> findAllWithFilter(IncomeFilterRequest request, Pageable pageable) {
+        return incomeRepository.findAllWithFilter(
+//                request.getPrice(),
+//                request.getQuantity(),
+//                request.getIncomeStatus(),
+                pageable
+        );
+    }
+    public Page<IncomeDto> getAllIncomes(Pageable pageable) {
+        return incomeRepository.findAllIncomes(pageable);
+    }
+
 
 }
